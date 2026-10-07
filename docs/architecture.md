@@ -102,8 +102,9 @@ chosen from security requirements, not hidden behind the backend interface.
 
 ### Sandbox qualification record
 
-This repository has no Desktop launcher, pinned CEF revision, or measured sandbox results yet. The
-following candidate platform rows are **unqualified**, not a claim of supported production targets.
+This repository now has a macOS engineering-preview launcher and exact CEF pin, but no completed
+sandbox qualification. See `../cef/pin.json` and `./development.md` for implementation status. The
+following candidate platform rows remain **unqualified**, not a claim of supported production targets.
 Before release, expand them for every supported OS version/architecture and exact CEF revision and
 Chromium version. Record the actual state (`enabled`, `disabled`, or `not spawned`) and evidence for
 each process, with separate utility service subtypes and GPU hardware/software modes.
@@ -111,7 +112,7 @@ each process, with separate utility service subtypes and GPU hardware/software m
 | Platform / CEF revision | Browser | Renderer | GPU | Utility (each subtype) |
 | --- | --- | --- | --- | --- |
 | Windows / not selected | Unsandboxed broker by design; unmeasured | Unmeasured; sandbox required | Unmeasured | Unmeasured |
-| macOS / not selected | Unsandboxed broker by design; unmeasured | Unmeasured; sandbox required | Unmeasured | Unmeasured |
+| macOS arm64/x64 / CEF 154.0.34, `g14c5a08` | Unsandboxed broker by design; unqualified | Unmeasured; sandbox required | Unmeasured | Unmeasured |
 | Linux / not selected | Unsandboxed broker by design; unmeasured | Unmeasured; sandbox required | Unmeasured | Unmeasured |
 
 Each record must include build flags, executable/helper paths and hashes, effective command lines,
@@ -269,8 +270,9 @@ target exists, fail closed and require a safe recovery update instead of startin
 
 ### Required security acceptance tests
 
-These are required integration-test cases for the future Desktop updater and launcher. Both the
-implementation and executable Desktop tests are absent from this repository. Production qualification
+These are required integration-test cases for the future production updater and launcher. The D1
+preview has host-policy and native smoke tests, but no updater implementation or executable tests
+for these update/rollback cases. Production qualification
 requires them to run against the packaged build on every supported platform. Use signed fixtures
 and otherwise valid metadata so negative cases reach the intended check. Let `F` be the installed
 security floor and `A` the failed release; candidate `B` is an older compatible release.

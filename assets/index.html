@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kunlun Desktop · D1 engineering preview</title>
+  <link rel="stylesheet" href="./app.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#main"><span class="mark" aria-hidden="true">K</span> Kunlun Desktop</a>
+    <span class="build">D1 / ENGINEERING PREVIEW</span>
+  </header>
+  <main id="main">
+    <section class="intro" aria-labelledby="title">
+      <p class="eyebrow">DESKTOP HOST / SMOKE SHELL</p>
+      <h1 id="title">A small window into the host.</h1>
+      <p class="lede">Verify the native presentation boundary. This preview reports host diagnostics and checks the CEF message channel—nothing more.</p>
+      <div class="badges"><span>Engineering preview</span><span class="warning">Sandbox unqualified</span><span>Runtime not connected</span></div>
+    </section>
+    <div class="grid">
+      <section class="panel" aria-labelledby="diagnostics-title">
+        <div class="panel-heading"><h2 id="diagnostics-title">Host diagnostics</h2><span class="label">01</span></div>
+        <p id="host-status" role="status">Contacting desktop host…</p>
+        <dl>
+          <div><dt>Host</dt><dd id="host-name">Awaiting host</dd></div>
+          <div><dt>Desktop version</dt><dd id="host-version">Not reported</dd></div>
+          <div><dt>Presentation backend</dt><dd id="backend">Not reported</dd></div>
+          <div><dt>CEF version</dt><dd id="cef-version">Not reported</dd></div>
+          <div><dt>Chromium version</dt><dd id="chromium-version">Not reported</dd></div>
+          <div><dt>Sandbox requested</dt><dd id="sandbox-requested">Not reported</dd></div>
+          <div><dt>Sandbox qualification</dt><dd>Unqualified</dd></div>
+          <div><dt>Kunlun runtime</dt><dd>Not connected</dd></div>
+        </dl>
+        <button id="refresh" type="button">Refresh diagnostics</button>
+      </section>
+      <section class="panel" aria-labelledby="channel-title">
+        <div class="panel-heading"><h2 id="channel-title">Host channel</h2><span class="label">02</span></div>
+        <p>Send a token to the native host and verify its echo. A reply confirms only the desktop-host channel, not a runtime or debugger session.</p>
+        <button id="ping" class="primary" type="button">Ping host</button>
+        <p id="ping-status" role="status">Ready to check the host channel.</p>
+        <h3>Recent activity <span class="label">LAST 8 EVENTS</span></h3>
+        <ol id="activity" aria-label="Recent host activity"><li class="empty">No requests completed yet.</li></ol>
+      </section>
+    </div>
+    <aside class="boundary" aria-labelledby="boundary-title">
+      <h2 id="boundary-title">Presentation, not execution.</h2>
+      <p>CEF renders this screen. Kunlun/JSC application execution and the DevTools service are separate boundaries and are not connected in D1. No targets, sessions, or privileged service APIs are exposed.</p>
+    </aside>
+  </main>
+  <footer><span>Kunlun Desktop / 0.1.0-dev</span><span>Development smoke shell · Not production-qualified</span></footer>
+</body>
+</html>

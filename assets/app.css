@@ -1,0 +1,50 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #111619;
+  color: #e3ebe8;
+  font-size: 14px;
+  line-height: 1.6;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+.topbar, footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 32px; border-bottom: 1px solid #303a3d; }
+.brand { color: #e3ebe8; text-decoration: none; font-weight: 650; display: flex; align-items: center; gap: 12px; }
+.mark { background: #b8e8cf; color: #142820; border-radius: 7px; padding: 1px 10px; font-size: 22px; }
+.build, .eyebrow, .label { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: .09em; color: #a9bdb6; }
+main { max-width: 1120px; margin: auto; padding: 38px 32px; }
+.intro { max-width: 760px; margin-bottom: 32px; }
+.eyebrow { color: #b8e8cf; }
+h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.2; letter-spacing: -.035em; margin: 12px 0 16px; font-weight: 600; }
+.lede { font-size: 16px; color: #b4c0be; max-width: 670px; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.badges span { border: 1px solid #3a5149; border-radius: 5px; padding: 4px 10px; font-size: 12px; }
+.badges .warning { color: #f2cf93; border-color: #6d5837; background: #2a241b; }
+.grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; }
+.panel { background: #192125; border: 1px solid #354044; border-radius: 10px; padding: 24px; min-width: 0; }
+.panel-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+h2 { font-size: 17px; margin: 0; font-weight: 600; }
+h3 { font-size: 13px; margin: 26px 0 12px; display: flex; justify-content: space-between; gap: 10px; }
+.panel p, .boundary p { color: #b9c5c2; }
+dl { margin: 20px 0; }
+dl div { display: grid; grid-template-columns: 1fr 1.2fr; gap: 14px; padding: 9px 0; border-bottom: 1px solid #303b3e; }
+dt { color: #a5b6b0; }
+dd { margin: 0; font-family: ui-monospace, monospace; font-size: 12px; overflow-wrap: anywhere; }
+button { font: inherit; font-weight: 600; border: 1px solid #5f7b70; border-radius: 6px; background: #263931; color: #e3ebe8; padding: 9px 16px; cursor: pointer; }
+button.primary { background: #b8e8cf; color: #142820; border-color: #b8e8cf; }
+button:hover:not(:disabled) { filter: brightness(1.12); }
+button:disabled { opacity: .6; cursor: wait; }
+:focus-visible { outline: 3px solid #f2cf93; outline-offset: 4px; }
+#activity { padding: 0; margin: 0; list-style: none; }
+#activity li { font-size: 12px; padding: 9px 0; border-top: 1px solid #303b3e; overflow-wrap: anywhere; }
+#activity time { color: #93a99f; margin-right: 10px; font-family: ui-monospace, monospace; }
+.empty { color: #a5b6b0; }
+.boundary { border-left: 2px solid #6d9381; padding: 2px 20px; margin-top: 30px; }
+.boundary p { max-width: 850px; margin: 8px 0; font-size: 13px; }
+footer { border-top: 1px solid #303a3d; border-bottom: 0; color: #a5b6b0; font-size: 12px; }
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+  .topbar, footer { padding: 16px 20px; flex-wrap: wrap; }
+  main { padding: 28px 20px; }
+  .panel { padding: 20px; }
+}
