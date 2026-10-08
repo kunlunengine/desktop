@@ -27,6 +27,10 @@ two repositories; an incompatible pairing fails startup negotiation. The
 standalone DevTools product remains a separate client of that boundary, with
 Kunlun Desktop as its first native presentation host.
 
+The current platform scope is **macOS and Linux**. Windows implementation, CI, packaging,
+and qualification are deferred until Kunlun Runtime has a Windows port and Desktop integration
+is explicitly re-scoped. Upstream backend capabilities do not extend Kunlun's support matrix.
+
 The first production-qualified Kunlun Desktop presentation backend uses a **pinned CEF/Chromium
 distribution**. Chromium is a presentation engine only: it does not become the Kunlun application
 runtime, and Kunlun Desktop does not adopt Electron's Node-in-the-renderer architecture.
@@ -111,7 +115,6 @@ each process, with separate utility service subtypes and GPU hardware/software m
 
 | Platform / CEF revision | Browser | Renderer | GPU | Utility (each subtype) |
 | --- | --- | --- | --- | --- |
-| Windows / not selected | Unsandboxed broker by design; unmeasured | Unmeasured; sandbox required | Unmeasured | Unmeasured |
 | macOS arm64/x64 / CEF 154.0.34, `g14c5a08` | Unsandboxed broker by design; unqualified | Unmeasured; sandbox required | Unmeasured | Unmeasured |
 | Linux / not selected | Unsandboxed broker by design; unmeasured | Unmeasured; sandbox required | Unmeasured | Unmeasured |
 
@@ -120,11 +123,6 @@ Each record must include build flags, executable/helper paths and hashes, effect
 `sandbox_info` value's origin and whether it is null (not its raw address). Check startup against
 the selected revision's [CEF sandbox setup](https://github.com/chromiumembedded/cef/blob/master/docs/sandbox_setup.md):
 
-- **Windows:** use the same sandbox-capable executable for browser and child processes; do not set
-  `browser_subprocess_path`. For M138 and newer, use the matching CEF bootstrap executable/client
-  DLL arrangement, or build the executable within CEF/Chromium. Forward the executable-created,
-  non-null `sandbox_info` to both `CefExecuteProcess` and `CefInitialize`. Older revisions use the
-  executable-linked `cef_sandbox` static library and `cef_sandbox_info_create()`.
 - **macOS:** initialize each helper with `CefScopedSandboxContext::Initialize` before loading the
   CEF framework; failure terminates the helper. M138 and newer dynamically load the bundled
   `libcef_sandbox.dylib`; earlier revisions link the helper with `cef_sandbox`. Record helper bundle
@@ -175,14 +173,13 @@ validates every privileged request even when the UI already disabled the corresp
 | Option | Release control and visual stability | Main cost | Decision |
 | --- | --- | --- | --- |
 | Pinned CEF/Chromium | One qualified engine build per Desktop channel; small residual OS/font/GPU variation | Large package, multiple processes, Kunlun owns Chromium security updates | **Reference backend for the first release** |
-| Platform WebViews | Smaller application bundle and vendor-managed engine on some platforms, but engine and rollout differ by OS | Three integration stacks, wider visual/API matrix, Linux WebKitGTK dependency and API fragmentation | Deferred as optional backends; not part of the initial compatibility promise |
+| Platform WebViews | Smaller application bundle and vendor-managed engine on some platforms, but engine and rollout differ by OS | Separate platform integration stacks, wider visual/API matrix, Linux WebKitGTK dependency and API fragmentation | Deferred as optional backends; not part of the initial compatibility promise |
 | Private WebCore+JSC runtime | A pinned fork could freeze behavior, but Kunlun would own the entire rendering and platform integration matrix | Browser-scale engineering, security response, WPT/layout/Test262, graphics, media, IME, accessibility, sandbox, and updater work | Rejected for the foreseeable roadmap |
 
 ### Why not make platform WebViews the default
 
-The phrase "platform WebView" hides different products and lifecycle contracts. Windows WebView2
-offers Evergreen and Fixed Version distribution; the former changes outside the application release
-and the latter restores a bundled-runtime cost. macOS WKWebView follows the OS WebKit version. Linux
+The phrase "platform WebView" hides different products and lifecycle contracts.
+Within the current platform scope, macOS WKWebView follows the OS WebKit version. Linux
 WebKitGTK spans GTK and API generations and brings GTK, GLib/GIO, libsoup, and distribution-specific
 packaging constraints. A UI can be portable across these backends, but its release qualification is
 not one matrix.
@@ -285,7 +282,7 @@ security floor and `A` the failed release; candidate `B` is an older compatible 
 | Safe `B`, but authorization is missing, invalidly signed, expired, replayed, or bound to another source, target, platform/channel, or failure | Reject each variant; an old signed manifest alone never permits downgrade. |
 | Otherwise valid update/rollback with a revoked revision, artifact, manifest, signing key, or authorization | Reject each revocation variant, including revocation after staging but before activation. |
 | Missing, invalid, expired security/revocation metadata or a sequence below the retained value; attempt to lower the retained floor through an old bundle | Reject each variant; rollback and restart never restore older security policy. |
-| Required subprocess sandbox disabled, initialization fails, or runtime evidence disagrees with configuration | Fail qualification on each platform; include null Windows `sandbox_info`, macOS helper initialization failure, and unavailable required Linux sandbox mechanisms. |
+| Required subprocess sandbox disabled, initialization fails, or runtime evidence disagrees with configuration | Fail qualification on each in-scope platform; include macOS helper initialization failure and unavailable required Linux sandbox mechanisms. |
 | All required subprocess probes pass with the documented privileged browser broker | Pass the sandbox gate without claiming that the browser itself is sandboxed. |
 
 ## Revisit conditions
@@ -306,13 +303,11 @@ not an optimization task inside the Desktop showcase.
 - [CEF general usage and multi-process architecture](https://github.com/chromiumembedded/cef/blob/master/docs/general_usage.md)
 - [CEF C API embedding lifecycle](https://github.com/chromiumembedded/cef/blob/master/docs/using_the_capi.md)
 - [CEF sandbox setup and revision-dependent platform requirements](https://github.com/chromiumembedded/cef/blob/master/docs/sandbox_setup.md)
-- [CEF Windows sandbox API](https://github.com/chromiumembedded/cef/blob/master/include/cef_sandbox_win.h)
 - [CEF macOS sandbox API](https://github.com/chromiumembedded/cef/blob/master/include/cef_sandbox_mac.h)
 - [Chromium sandbox and privileged browser broker](https://chromium.googlesource.com/chromium/src/+/main/docs/design/sandbox.md)
 - [Chromium Linux sandbox mechanisms](https://chromium.googlesource.com/chromium/src/+/HEAD/sandbox/linux/README.md)
 - [WebKitGTK stable API reference](https://webkitgtk.org/reference/webkitgtk/stable/)
 - [Migrating WebKitGTK applications to GTK 4 / WebKitGTK 6.0](https://webkitgtk.org/reference/webkitgtk/stable/migrating-to-webkitgtk-6.0.html)
-- [Microsoft WebView2 runtime distribution](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution)
 - [Apple WKWebView](https://developer.apple.com/documentation/webkit/wkwebview)
 
 ## Related desktop project references

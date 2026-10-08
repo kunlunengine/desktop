@@ -2,6 +2,8 @@ import copy
 import hashlib
 import io
 import json
+import shutil
+import subprocess
 import tarfile
 import tempfile
 import unittest
@@ -10,6 +12,32 @@ from unittest.mock import patch
 
 from tools.embed_assets import ASSET_FILES, render_header
 from tools.fetch_cef import PIN_PATH, extract_archive, fetch, validate_pin, verify_archive
+
+
+class BuildPlatformTests(unittest.TestCase):
+    def test_windows_target_rejected_before_compiler_discovery(self):
+        cmake = shutil.which("cmake")
+        if cmake is None:
+            self.skipTest("CMake is unavailable")
+        with tempfile.TemporaryDirectory() as temporary:
+            result = subprocess.run(
+                [
+                    cmake,
+                    "-S", str(Path(__file__).resolve().parents[1]),
+                    "-B", temporary,
+                    "-DCMAKE_SYSTEM_NAME=Windows",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=False,
+            )
+        output = result.stdout + result.stderr
+        diagnostic = " ".join(output.split())
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Windows is outside the current Kunlun Desktop scope", diagnostic)
+        self.assertIn("Kunlun Runtime Windows port must be completed", diagnostic)
+        self.assertNotIn("CXX compiler identification", output)
 
 
 class CefPinTests(unittest.TestCase):

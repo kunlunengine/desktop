@@ -8,6 +8,10 @@ without introducing a second GUI toolkit or an additional language-binding layer
 library is renderer-independent; the CEF adapter is currently a deliberately small, single-window
 spike, not the complete D2 backend interface.
 
+The current platform scope is macOS and Linux. Windows builds are rejected before compiler
+discovery; Windows work is deferred until the Kunlun Runtime port is complete and Desktop
+integration is explicitly re-scoped. Linux currently runs portable tests only.
+
 Presentation assets use HTML/CSS and JavaScript modules with no npm dependencies or bundler.
 They render host diagnostics and verify a ping. Application semantics, debugger targets, JSC
 execution, and service protocols are not implemented in the renderer or replaced with mocks.
@@ -124,7 +128,7 @@ No remote debugging port or user-supplied script is accepted. The fixed native s
 host-injected test code, not a renderer-facing evaluation API. A 15-second in-process deadline and
 an outer harness timeout make a stuck smoke fail.
 
-GitHub CI runs portable tests on Linux/macOS/Windows and a packaged CEF lane on the native
+GitHub CI runs portable tests on Linux/macOS and a packaged CEF lane on the native
 architecture of `macos-latest`. It caches only the upstream archive, revalidating it before every
 extraction. CI is configured here; a local successful run does not imply GitHub CI has already run
 or qualify other operating systems/architectures.
@@ -138,8 +142,8 @@ or qualify other operating systems/architectures.
   invent debugger/application semantics here.
 - Implement the D2 profile/window/view contract, renderer/service crash lifecycle, capability
   authorization, audit, and bounded streaming before connecting privileged services.
-- Add Windows' matching sandbox-capable bootstrap/client-DLL arrangement and qualified Linux
-  namespace/seccomp setup; neither has a native host in this revision.
+- Add Linux native startup and qualified namespace/seccomp setup; Linux has no native host
+  in this revision.
 - Complete signed application-bundle admission, installer/update/rollback tests, the sandbox
   evidence matrix, and accessibility/input qualification before any production release.
 
