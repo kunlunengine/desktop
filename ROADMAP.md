@@ -5,6 +5,13 @@ Status date: 2026-10-07
 Implementation has started with a macOS CEF engineering preview. The roadmap follows the accepted
 architecture decision; the runtime repository owns milestones M0–M3 for the JSC host.
 
+## Platform scope
+
+Desktop work currently targets **macOS and Linux**. Windows is excluded from implementation,
+CI, packaging plans, and qualification gates because Kunlun Runtime has not been ported to
+Windows. Completing that Runtime port is a prerequisite, not automatic Desktop support:
+Windows must be explicitly re-scoped and separately integrated and qualified before returning.
+
 ## Product decisions
 
 1. **CEF/Chromium renders; Kunlun owns the host.** A pinned CEF distribution is the sole
@@ -27,7 +34,7 @@ architecture decision; the runtime repository owns milestones M0–M3 for the JS
   local secure-origin bundle, versioned bidirectional IPC channel. **In progress:** exact
   CEF/Chromium pin and verified archive fetch; macOS bundle/helpers; embedded development assets;
   browser-authorized diagnostics/ping; native smoke and rejection tests. macOS arm64 startup has
-  been exercised. Windows/Linux native startup, signed application bundles, and the general
+  been exercised. Linux native startup, signed application bundles, and the general
   renderer-backend contract are not implemented.
 - **D2 — Host contract**: profiles/windows/views lifecycle, navigation and permission policy,
   renderer-crash recovery, capability-checked service IPC routing and audit. **Pending.**

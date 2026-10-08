@@ -3,6 +3,9 @@
 Status: unqualified — no completed runtime restriction/probe evidence. The D1 macOS arm64 preview
 builds and runs its native UI/IPC smoke with sandboxing requested; this is not qualification.
 
+The current qualification scope is macOS and Linux. Windows is excluded until the Kunlun
+Runtime Windows port is complete and Desktop support is explicitly re-scoped.
+
 Before release, expand the table for every supported OS version/architecture and exact CEF
 revision and Chromium version. Record actual state (`enabled`, `disabled`, or `not spawned`)
 and evidence for each process, with separate utility service subtypes and GPU hardware/software
@@ -10,7 +13,6 @@ modes.
 
 | Platform / CEF revision | Browser | Renderer | GPU | Utility (each subtype) |
 | --- | --- | --- | --- | --- |
-| Windows / not selected | Unsandboxed broker by design; unmeasured | Unmeasured; sandbox required | Unmeasured | Unmeasured |
 | macOS arm64/x64 / CEF 154.0.34, `g14c5a08` | Unsandboxed broker by design; unqualified | Unmeasured; sandbox required | Unmeasured | Unmeasured |
 | Linux / not selected | Unsandboxed broker by design; unmeasured | Unmeasured; sandbox required | Unmeasured | Unmeasured |
 

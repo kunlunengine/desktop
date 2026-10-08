@@ -7,6 +7,10 @@ The Core/runtime coordination thread confirmed that the existing BuildEngine pro
 bundle, signing, or service launch. Desktop integration must be a separate cross-repository work
 package, not a new label on those existing outputs.
 
+The current Desktop integration scope is macOS and Linux. Windows implementation, native
+tooling, and packaging/distribution work are deferred until Kunlun Runtime is ported to Windows
+and the Desktop target is explicitly re-scoped.
+
 ## Ownership
 
 | Owner | Responsibility | Not its responsibility |
@@ -61,8 +65,6 @@ The cross-platform CLI must coordinate and diagnose native stages separately:
 
 - Pin/fetch/verify CEF and discover the required compiler/SDK without substituting installed Chrome.
 - macOS: C++/Objective-C++, bundle and helper layout, entitlements, signing, and notarization.
-- Windows: the matching M138+ bootstrap/client-DLL arrangement and non-null executable-created
-  `sandbox_info`, not an unsandboxed alternate executable.
 - Linux: native packaging and qualified namespace/seccomp/helper requirements for the chosen
   distribution, architecture, and feature profile.
 - Carry resource manifests, license notices, service distributions, and protocol pins in the

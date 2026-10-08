@@ -36,7 +36,10 @@ open "build-cef/bin/Kunlun Desktop.app"
 The native test opens and closes the actual packaged window. The preview requests the CEF sandbox
 and rejects caller-supplied Chromium overrides; successful startup is **not sandbox qualification**.
 macOS arm64 has been exercised locally. macOS x64 is pinned but not yet locally qualified;
-Windows/Linux currently have policy tests only, not native Desktop executables.
+Linux currently has policy tests only, not a native Desktop executable.
+
+The current Desktop platform scope is **macOS and Linux**. Windows builds and CI are excluded
+until the Kunlun Runtime Windows port is complete and Desktop integration is explicitly re-scoped.
 
 ## Documents
 

@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.21)
-project(KunlunDesktop VERSION 0.1.0 LANGUAGES CXX)
+project(KunlunDesktop VERSION 0.1.0 LANGUAGES NONE)
+
+if(WIN32)
+  message(FATAL_ERROR
+    "Windows is outside the current Kunlun Desktop scope; "
+    "the Kunlun Runtime Windows port must be completed before Desktop support is restored.")
+endif()
+enable_language(CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,11 +16,7 @@ option(KUNLUN_BUILD_CEF "Build the macOS CEF engineering preview" OFF)
 
 add_library(kunlun_host_policy STATIC src/host/policy.cc)
 target_include_directories(kunlun_host_policy PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
-if(MSVC)
-  target_compile_options(kunlun_host_policy PRIVATE /W4 /WX)
-else()
-  target_compile_options(kunlun_host_policy PRIVATE -Wall -Wextra -Wpedantic -Werror)
-endif()
+target_compile_options(kunlun_host_policy PRIVATE -Wall -Wextra -Wpedantic -Werror)
 
 include(CTest)
 if(BUILD_TESTING)
