@@ -314,3 +314,25 @@ not an optimization task inside the Desktop showcase.
 - [Migrating WebKitGTK applications to GTK 4 / WebKitGTK 6.0](https://webkitgtk.org/reference/webkitgtk/stable/migrating-to-webkitgtk-6.0.html)
 - [Microsoft WebView2 runtime distribution](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution)
 - [Apple WKWebView](https://developer.apple.com/documentation/webkit/wkwebview)
+
+## Related desktop project references
+
+“Deno Desktop” refers to Deno's `deno desktop` feature, not a separate canonical repository. These
+projects are useful comparisons, not dependencies or requirements for Kunlun Desktop:
+
+- [Deno Desktop implementation](https://github.com/denoland/deno/blob/main/cli/tools/desktop.rs)
+  and its [desktop runtime](https://github.com/denoland/deno/tree/main/cli/rt_desktop) show how the
+  CLI, application runtime, and native backend are separated. Deno packages its program/runtime with
+  a native backend and uses in-process bindings for application-to-webview calls; that is not Kunlun's
+  execution boundary. Kunlun retains its separately contained application/tool service and
+  capability-checked host boundary.
+- [Laufey architecture](https://github.com/littledivy/laufey/blob/main/docs/architecture.md) and
+  [C ABI](https://github.com/littledivy/laufey/blob/main/docs/c-abi.md) are useful references for a
+  versioned backend/runtime seam that keeps engine-specific operations behind an explicit interface.
+  They do not replace Kunlun's host-side authorization or platform qualification gates.
+- [Deno Desktop documentation](https://github.com/denoland/docs/tree/main/runtime/desktop) is a
+  useful documentation-organization example: a topic landing page links to focused capability pages,
+  with availability labels and platform-specific behavior documented alongside features.
+- [Denidian](https://github.com/bartlomieju/denidian) is a small end-to-end Deno Desktop application
+  example for explaining project layout and packaging. Any future Kunlun example should instead make
+  Kunlun's renderer-to-host-to-service boundary explicit.
